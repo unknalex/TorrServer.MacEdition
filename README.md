@@ -1,11 +1,14 @@
 # TorrServer.MacEdition
-
 Лёгкий и удобный менеджер для запуска **TorrServer MatriX** в системном трее macOS (оптимизирован для Intel Mac и macOS Monterey и выше). Изначально программа разрабатывалась для личного пользования, но принял решение опубликовать её в общий доступ :)
+
+<img width="1800" height="591" alt="Frame 4(2)" src="https://github.com/user-attachments/assets/21bd00fc-a636-4fec-865a-ffe727ae4f76" />
 
 ### Особенности:
 - Работает прямо из системного меню (Menu Bar).
 - Поддержка автозагрузки через системные агенты `LaunchAgents`.
 - Проверка обновлений в один клик.
+
+<img width="480" height="256" alt="Снимок экрана 2026-10-26 в 01 57 34" src="https://github.com/user-attachments/assets/4de0b1ac-7d94-40f1-b9cb-c05ef556b05d" />
 
 ### Как установить:
 1. Скачать .dmg со страницы с [релизами](https://github.com/unknalex/TorrServer.MacEdition/releases)
