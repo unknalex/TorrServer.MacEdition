@@ -1,19 +1,46 @@
 # -*- mode: python ; coding: utf-8 -*-
+import os
+from PyInstaller.utils.hooks import collect_submodules
 
+# --- Имена и пути ---
+APP_NAME = "TorrServer"                    
+BUNDLE_ID = "com.torrserver.macedition"     
+APP_VERSION = "1.0"
+SCRIPT = "TorrServerMacEdition.py"          
+APP_ICON = "icon.icns"
+
+# --- Ресурсы (иконки для rumps) ---
+datas = [
+    ('on.png', '.'),
+    ('off.png', '.'),
+    ('think.png', '.'),
+    ('update.png', '.'),
+    ('logo.png', '.'),
+]
+
+# --- rumps ---
+hiddenimports = collect_submodules('rumps') + [
+    'objc',
+    'AppKit',
+    'Foundation',
+    'Cocoa',
+    'Quartz',
+    'Security',
+]
 
 a = Analysis(
-    ['TorrServerMacEdition.py'],
+    [SCRIPT],
     pathex=[],
     binaries=[],
-    datas=[],
-    hiddenimports=[],
+    datas=datas,
+    hiddenimports=hiddenimports,
     hookspath=[],
     hooksconfig={},
     runtime_hooks=[],
     excludes=[],
     noarchive=False,
-    optimize=0,
 )
+
 pyz = PYZ(a.pure)
 
 exe = EXE(
@@ -21,36 +48,32 @@ exe = EXE(
     a.scripts,
     [],
     exclude_binaries=True,
-    name='TorrServer',
+    name=APP_NAME,
     debug=False,
     bootloader_ignore_signals=False,
     strip=False,
-    upx=True,
-    console=False,
+    upx=False,
+    console=False,               
     disable_windowed_traceback=False,
     argv_emulation=False,
-    target_arch=None,
+    target_arch='x86_64',        # darwin-amd64
     codesign_identity=None,
     entitlements_file=None,
-    icon=['icon.icns'],
 )
-coll = COLLECT(
+
+app = BUNDLE(
     exe,
     a.binaries,
     a.datas,
-    strip=False,
-    upx=True,
-    upx_exclude=[],
-    name='TorrServer',
-)
-app = BUNDLE(
-    exe,
-    name='TorrServer.app',
-    icon='icon.icns',
-    bundle_identifier='com.torrserver.macedition',
+    name=f'{APP_NAME}.app',
+    icon=APP_ICON,
+    bundle_identifier=BUNDLE_ID,
     info_plist={
-        'NSHumanReadableCopyright': 'Copyright © 2026 unknalex. All rights reserved.',
-        'CFBundleShortVersionString': '1.0',
-        'CFBundleVersion': '1.0'
+        'CFBundleName': 'TorrServer',
+        'CFBundleDisplayName': 'TorrServer',
+        'CFBundleShortVersionString': APP_VERSION,
+        'CFBundleVersion': APP_VERSION,
+        'LSUIElement': True,
+        'NSHumanReadableCopyright': 'Copyright © 2026 unknalex. GPL-3.0-or-later.',
     },
 )
