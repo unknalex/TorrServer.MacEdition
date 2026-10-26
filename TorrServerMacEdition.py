@@ -9,19 +9,6 @@ import json
 import time
 import rumps
 
-# === ИЗМЕНЕНИЯ ОТНОСИТЕЛЬНО ОРИГИНАЛА ===
-# 1. Явный cwd=BASE_DIR при запуске сервера — лечит запуск из Finder (.app).
-# 2. Проверка is_running() через TCP-подключение к порту, а не pgrep.
-# 3. Полные пути к системным утилитам (xattr, pkill, pgrep, osascript) —
-#    Finder запускает .app с минимальным PATH.
-# 4. Снятие com.apple.quarantine с скачанного бинарника.
-# 5. Логирование stderr/stdout сервера в ~/.local/share/TorrServer/server.log
-#    вместо /dev/null — видно причину падения.
-# 6. Убийство "зависшего" процесса перед стартом.
-# 7. rumps.Timer каждые 5 сек обновляет иконку — она больше не «зависает».
-# 8. Флаг _busy защищает UI от гонок между таймером и переключением.
-# 9. Увеличен таймаут ожидания старта (15 сек вместо 10.5).
-
 BASE_DIR = os.path.expanduser("~/.local/share/TorrServer")
 TORR_PATH = os.path.join(BASE_DIR, "TorrServer-darwin-amd64")
 VERSION_FILE = os.path.join(BASE_DIR, "version.txt")
@@ -115,8 +102,6 @@ class TorrServerManager(rumps.App):
             self.open_web,
             self.about_item,
         ]
-
-        # Периодическое обновление статуса — иконка не «зависает»
         self.timer = rumps.Timer(self.periodic_check, 5)
         self.timer.start()
 
@@ -340,7 +325,6 @@ class TorrServerManager(rumps.App):
                 self.status_item.title = "Статус: Включение..."
                 self.toggle_item.title = "Подождите..."
                 try:
-                    # Убить возможный «зависший» процесс, чтобы не мешал порту
                     self._stop_server_process()
                     time.sleep(0.3)
 
